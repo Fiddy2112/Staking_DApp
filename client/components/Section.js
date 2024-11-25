@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import StakingCard from "./StakingCard";
+import Header from "./Header";
 
 const Section = () => {
   return (
@@ -22,7 +23,15 @@ const Section = () => {
           </button>
         </div>
       </div>
-      {/* our partnert */}
+      <div>
+        <Header />
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <StakingCard apy={"50%"} amount={"20.0"} token={"ETH"} />
+        <StakingCard apy={"100%"} amount={"100.0"} token={"ETH"} />
+        <StakingCard apy={"200%"} amount={"200.0"} token={"ETH"} />
+      </div>
+      {/* our partners */}
       <div className="flex justify-center flex-col text-center items-center mt-8">
         <span className="bg-gray-700/40 border border-gray-600 text-white font-mono text-sm p-2 rounded-md">
           Our Partners
@@ -67,9 +76,6 @@ const Section = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="grid grid-cols-3">
-        <StakingCard />
       </div>
     </div>
   );
