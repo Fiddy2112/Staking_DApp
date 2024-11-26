@@ -1,11 +1,33 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaFacebookF, FaTwitter } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
+import axios from "axios";
 
 const Footer = () => {
+  const [mail, setMail] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:5050/send-email", {
+        mail,
+      });
+      const data = response.data;
+      console.log(data);
+      if (data.success) {
+        console.log("Email sent successfully");
+        useState("");
+      } else {
+        console.log("Failed to send email: " + data.error);
+        useState("");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="mx-auto max-w-screen-xl py-7">
       <div className="grid grid-cols-3 justify-between">
@@ -72,9 +94,16 @@ const Footer = () => {
                 className="w-full outline-none px-2"
                 type="text"
                 placeholder="Email"
+                value={mail}
+                onChange={(e) => setMail(e.target.value)}
               />
-              <button className="outline-none bg-black text-white p-2 w-8 h-8 flex items-center justify-center rounded-md">
-                /
+              <button
+                onClick={handleSubmit}
+                className={`${
+                  mail.length > 0 ? "w-auto" : "w-8"
+                } outline-none bg-black text-white p-2 h-8 flex items-center justify-center rounded-md`}
+              >
+                {mail ? "Send" : "/"}
               </button>
             </div>
           </div>
