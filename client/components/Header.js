@@ -1,20 +1,33 @@
 import React from "react";
 import { FaCheck } from "react-icons/fa6";
+import { IoWallet } from "react-icons/io5";
+import { MdArrowOutward } from "react-icons/md";
 
 const Header = () => {
   return (
-    <div className="flex items-center my-7">
+    <div className="flex items-center my-7 ">
       <div className="w-1/2">
         <h3 className="text-4xl font-mono font-medium">
-          <strong>Staking</strong> best return on your investment
+          <strong>Bring Staking</strong> to Your User Through Our Product
         </h3>
         <div className="mt-4">
-          <button className="outline-0 px-4 py-2 rounded-md bg-white font-semibold text-base text-[#000] font-mono mr-1">
-            Buy token
-          </button>
-          <button className="outline-0 px-4 py-2 rounded-md bg-white font-semibold text-base text-[#000] font-mono ml-1">
-            Add token
-          </button>
+          <div className="relative w-[200px] h-[200px] bg-white rounded-md">
+            <div className="absolute w-[200px] h-[200px] flex flex-col justify-between z-10 bg-black border border-white rounded-md px-2 py-4 hover:rotate-12 duration-500">
+              <div>
+                <h3 className="text-2xl font-mono">Live on 10+</h3>
+                <p className="text-base font-mono">proof of stake blockchain</p>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="p-2 bg-white text-black rounded-md">
+                  <IoWallet className="text-xl" />
+                </div>
+                <div className="p-2 bg-white text-black rounded-md">
+                  <MdArrowOutward className="text-xl" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div></div>
         </div>
       </div>
       <div className="w-1/2 flex flex-col items-end">
@@ -24,11 +37,11 @@ const Header = () => {
           <div>ICO Left: 20.0 Token</div>
 
           <div className="px-2 py-4">
-            <span className="flex items-center gap-2 font-mono">
+            <span className="flex items-center gap-2 font-mono py-2">
               <FaCheck className="text-green-500 text-sm" /> 1.1% of the deposit
               amount
             </span>
-            <span className="flex items-center gap-2 font-mono">
+            <span className="flex items-center gap-2 font-mono py-2">
               <FaCheck className="text-green-500 text-sm" />
               10000000000.0 total supply
             </span>

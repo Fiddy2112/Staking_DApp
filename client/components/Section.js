@@ -23,7 +23,7 @@ const Section = () => {
           </button>
         </div>
       </div>
-      <div>
+      <div className="">
         <Header />
       </div>
       <div className="grid grid-cols-3 gap-4">
