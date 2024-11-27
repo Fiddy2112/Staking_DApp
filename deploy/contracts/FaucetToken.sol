@@ -44,6 +44,6 @@ contract FaucetToken is Ownable {
 
 //# Guide
 // Before claim token
-// 1. approve address(user)
+// 1. approve send token for address(user)
 // 2. mint token to faucetAddress
 // 3. faucet now

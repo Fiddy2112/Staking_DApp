@@ -17,6 +17,8 @@ module.exports = {
   },
 };
 
-// https://sepolia.etherscan.io/address/0xe425FC2C8509933F34B18a1C51F760A3Ed8DFa09#code
+// Staking https://sepolia.etherscan.io/address/0xe425FC2C8509933F34B18a1C51F760A3Ed8DFa09#code
 
-// USDT reward address :0xEc567D0053a396f1f05d81bC0C88445Ad1920Ef0;
+// USDT https://sepolia.etherscan.io/address/0x3cc26036Ba29439C62001456eDAEcE8bC3a22db8#code
+
+// FaucetToken https://sepolia.etherscan.io/address/0xB01AE3A7Bd9075E063C8FEdD436A8Fd5e05a7e31#code

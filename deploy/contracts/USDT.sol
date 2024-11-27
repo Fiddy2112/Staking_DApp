@@ -12,8 +12,13 @@ contract USDT is ERC20,Ownable,ERC20Burnable {
     _mint(msg.sender, initialSupply);
     }
 
-    function updateInitalSupply(uint256 _initialSupply) external onlyOwner{
-        initialSupply = _initialSupply;
+
+    function updateInitialSupply(uint256 newSupply) external onlyOwner {
+        uint256 currentSupply = totalSupply();
+        require(newSupply > currentSupply, "New supply must be greater than the current supply");
+
+        uint256 diff = newSupply - currentSupply;
+        _mint(msg.sender, diff);
     }
 
      function mint(address to, uint256 amount) external onlyOwner {

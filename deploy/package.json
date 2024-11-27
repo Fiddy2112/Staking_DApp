@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "deployStaking": "npx hardhat ignition deploy ignition/modules/Staking.js --network sepolia --verify"
+    "deployStaking": "npx hardhat ignition deploy ignition/modules/Staking.js --network sepolia --verify",
+    "deployUSDT": "npx hardhat ignition deploy ignition/modules/USDT.js --network sepolia --verify",
+    "deployFaucet": "npx hardhat ignition deploy ignition/modules/FaucetToken.js --network sepolia --verify"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.1.0",
