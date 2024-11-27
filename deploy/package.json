@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "deployStaking": "npx hardhat ignition deploy ignition/modules/Staking.js --network sepolia --verify"
+  },
   "dependencies": {
     "@openzeppelin/contracts": "^5.1.0",
     "dotenv": "^16.4.5",
