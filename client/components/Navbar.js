@@ -46,6 +46,14 @@ const Navbar = () => {
                 Partners
               </Link>
             </li>
+            <li className="py-1 px-4">
+              <Link
+                className="font-mono font-base text-gray-50/70 hover:text-white"
+                href="/faucet"
+              >
+                Faucet
+              </Link>
+            </li>
           </ul>
         </div>
         <div>

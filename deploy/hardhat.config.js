@@ -21,4 +21,5 @@ module.exports = {
 
 // USDT https://sepolia.etherscan.io/address/0x3cc26036Ba29439C62001456eDAEcE8bC3a22db8#code
 
+// forgot *10 ** decimal()
 // FaucetToken https://sepolia.etherscan.io/address/0xB01AE3A7Bd9075E063C8FEdD436A8Fd5e05a7e31#code
