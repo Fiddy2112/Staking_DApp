@@ -1,9 +1,41 @@
-import React from "react";
+import { WalletContext } from "@/context/WalletProvider";
+import React, { useContext, useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { IoWallet } from "react-icons/io5";
 import { MdArrowOutward } from "react-icons/md";
 
 const Header = () => {
+  const { wallet, loadTokenICO } = useContext(WalletContext);
+  const [tokenICo, setTokenICO] = useState(null);
+  const [totalPercent, setTotalPercent] = useState(null);
+
+  console.log(tokenICo);
+  useEffect(() => {
+    const LoadToken = async () => {
+      const loadICO = await loadTokenICO();
+      setTokenICO(loadICO);
+    };
+
+    LoadToken();
+  }, []);
+
+  useEffect(() => {
+    if (tokenICo) {
+      const totalSupply = new Intl.NumberFormat("en-US").format(
+        tokenICo?.supply
+      );
+      const soldTokens = new Intl.NumberFormat("en-US").format(
+        tokenICo?.soldTokens
+      );
+      if (isNaN(totalSupply) || isNaN(soldTokens)) {
+        console.error("Invalid totalSupply or soldTokens value");
+        return;
+      }
+      const tokenLeft = totalSupply - soldTokens;
+      const percent = (tokenLeft / totalSupply) * 100;
+      setTotalPercent(isNaN(percent) ? 0 : Math.floor(percent));
+    }
+  }, [tokenICo]);
   return (
     <div className="flex items-center my-7 ">
       <div className="w-1/2">
@@ -33,8 +65,13 @@ const Header = () => {
       <div className="w-1/2 flex flex-col items-end">
         <div className="p-4 rounded-md text-center bg-black w-[350px]">
           <h3 className="font-mono text-xl">Token ICO</h3>
-          <div className="font-mono text-base">0.001 ETH</div>
-          <div>ICO Left: 20.0 Token</div>
+          <div className="font-mono text-base">{`${tokenICo?.tokenPrice} ${tokenICo?.symbol}`}</div>
+          <div>
+            ICO Left:{" "}
+            {`${new Intl.NumberFormat("en-US").format(
+              tokenICo?.tokenBalance
+            )}  ${tokenICo?.symbol}`}
+          </div>
 
           <div className="px-2 py-4">
             <span className="flex items-center gap-2 font-mono py-2">
@@ -43,23 +80,26 @@ const Header = () => {
             </span>
             <span className="flex items-center gap-2 font-mono py-2">
               <FaCheck className="text-green-500 text-sm" />
-              10000000000.0 total supply
+              {new Intl.NumberFormat("en-US").format(tokenICo?.supply)} total
+              supply
             </span>
             <div>
-              <span>ICO sale: 10 Token</span>
+              <span>ICO sale: {tokenICo?.soldTokens} Token</span>
               <div>
                 <div className="flex justify-between mb-1">
                   <span className="text-base font-medium text-blue-700 dark:text-white">
                     Token
                   </span>
                   <span className="text-sm font-medium text-blue-700 dark:text-white">
-                    45%
+                    {totalPercent !== null ? `${totalPercent}%` : "Loading..."}
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                   <div
                     className="bg-blue-600 h-2.5 rounded-full"
-                    style={{ width: "45%" }}
+                    style={{
+                      width: totalPercent !== null ? `${totalPercent}%` : "0%",
+                    }}
                   ></div>
                 </div>
               </div>

@@ -5,7 +5,7 @@ import React, { createContext, useContext } from "react";
 import { FaFaucetDrip } from "react-icons/fa6";
 
 const index = () => {
-  const { wallet, faucetToken } = useContext(WalletContext);
+  const { wallet, faucetToken, toastType } = useContext(WalletContext);
 
   console.log(wallet);
   return (
@@ -13,7 +13,16 @@ const index = () => {
       <div className="flex gap-4 mt-7">
         <div className="w-1/2">
           <h3 className="text-3xl font-mono">We fund your crypto trades</h3>
-          <div></div>
+          <div>
+            <div>
+              <div></div>
+              <div></div>
+            </div>
+            <p className="my-2 font-mono text-base text-red-600">
+              {" "}
+              {toastType ? toastType : ""}
+            </p>
+          </div>
         </div>
         <div className="w-1/2 flex items-end">
           <div className="w-[350px] bg-black p-4 rounded-md flex flex-col justify-center items-center">
@@ -39,7 +48,7 @@ const index = () => {
                 Faucet
               </button>
             </div>
-            <p className="font-mono text-sm">
+            <p className="font-mono text-sm my-2">
               Enter the account address or ENS name where you want to receive
               tokens
             </p>
