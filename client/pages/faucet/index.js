@@ -5,7 +5,7 @@ import React, { createContext, useContext } from "react";
 import { FaFaucetDrip } from "react-icons/fa6";
 
 const index = () => {
-  const { wallet, faucetToken, toastType } = useContext(WalletContext);
+  const { wallet, faucetToken } = useContext(WalletContext);
 
   console.log(wallet);
   return (
@@ -18,10 +18,6 @@ const index = () => {
               <div></div>
               <div></div>
             </div>
-            <p className="my-2 font-mono text-base text-red-600">
-              {" "}
-              {toastType ? toastType : ""}
-            </p>
           </div>
         </div>
         <div className="w-1/2 flex items-end">
@@ -40,10 +36,14 @@ const index = () => {
                 className="w-full outline-none px-2 text-black"
                 type="input"
                 placeholder={`${wallet ? showAddress(wallet) : "Type address"}`}
+                required
               />
               <button
                 onClick={faucetToken}
-                className="outline-none w-auto h-8 p-2 rounded-md bg-black text-white flex flex-col items-center justify-center"
+                disabled={wallet ? false : true}
+                className={`outline-none w-auto h-8 p-2 rounded-md bg-black text-white flex flex-col items-center justify-center ${
+                  wallet ? "cursor-pointer" : "cursor-not-allowed"
+                }`}
               >
                 Faucet
               </button>
