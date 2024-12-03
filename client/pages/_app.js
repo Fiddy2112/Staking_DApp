@@ -7,7 +7,9 @@ export default function App({ Component, pageProps }) {
   return (
     <WalletProvider>
       <Navbar />
-      <Component {...pageProps} />
+      <div>
+        <Component {...pageProps} />
+      </div>
       <Footer />
     </WalletProvider>
   );

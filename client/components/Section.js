@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import StakingCard from "./StakingCard";
 import Header from "./Header";
+import StakingCard from "./StakingCard";
 
 const Section = () => {
   return (

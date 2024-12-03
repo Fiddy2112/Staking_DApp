@@ -1,4 +1,5 @@
 import { WalletContext } from "@/context/WalletProvider";
+import { copyPaste } from "@/utils/Features";
 import React, { useContext, useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { IoWallet } from "react-icons/io5";
@@ -9,7 +10,6 @@ const Header = () => {
   const [tokenICo, setTokenICO] = useState(null);
   const [totalPercent, setTotalPercent] = useState(null);
 
-  console.log(tokenICo);
   useEffect(() => {
     const LoadToken = async () => {
       const loadICO = await loadTokenICO();
@@ -50,7 +50,10 @@ const Header = () => {
                 <p className="text-base font-mono">proof of stake blockchain</p>
               </div>
               <div className="flex items-center justify-between">
-                <div className="p-2 bg-white text-black rounded-md">
+                <div
+                  onClick={() => copyPaste(wallet)}
+                  className="p-2 bg-white text-black rounded-md cursor-pointer"
+                >
                   <IoWallet className="text-xl" />
                 </div>
                 <div className="p-2 bg-white text-black rounded-md">

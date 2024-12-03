@@ -23,7 +23,8 @@ const WalletProvider = ({ children }) => {
   const [wallet, setWallet] = useState(null);
   const [walletConnected, setWalletConnected] = useState(false);
   const [owner, setOwner] = useState(null);
-  const [toastType, setToastType] = useState("");
+  const [transaction, setTransaction] = useState(null);
+
   // ABI & Address
   const addressUSDT = "0x3cc26036Ba29439C62001456eDAEcE8bC3a22db8";
   const contractUSDTABI = USDTABI;
@@ -63,17 +64,30 @@ const WalletProvider = ({ children }) => {
         const signer = provider.getSigner();
         const currentAddress = await signer.getAddress();
 
+        // get owner
+        const contract = new ethers.Contract(
+          addressUSDT,
+          contractUSDTABI,
+          signer
+        );
+
+        const owner = await contract.owner();
+        console.log(owner);
+        setOwner(owner);
+
         if (currentAddress === address) {
           setWallet(address);
           setWalletConnected(true);
         } else {
           console.log("Address mismatch. Please reconnect the wallet.");
+          notifyError("Address mismatch. Please reconnect the wallet.");
         }
       } else {
         console.log("Please install MetaMask");
       }
     } catch (error) {
       console.error("Error during reconnecting wallet:", error);
+      notifyError("Error during wallet reconnection. Please try again.");
     }
   };
 
@@ -128,7 +142,9 @@ const WalletProvider = ({ children }) => {
         contractFaucetABI,
         signer
       );
+
       const lastClaimTimeBigNumber = await faucetContract.lastClaimed(wallet);
+
       const lastClaimTime = lastClaimTimeBigNumber.toNumber();
 
       const cooldown = await faucetContract.claimCooldown();
@@ -144,7 +160,10 @@ const WalletProvider = ({ children }) => {
           minutes > 0 ? minutes + " minutes " : ""
         }${seconds} seconds`;
 
-        notifyError(`Please wait ${formattedTime} before claiming again.`);
+        notifyError(
+          `You have requested tokens in the last 24 hours. Please wait ${formattedTime} before trying again.`
+        );
+
         return;
       }
       // dont need approve
@@ -154,8 +173,9 @@ const WalletProvider = ({ children }) => {
       // console.log("Approve successful!");
       // faucet
       const faucetTx = await faucetContract.claimTokens();
-      console.log("Faucet transaction:", faucetTx);
+      // console.log("Faucet transaction:", faucetTx.hash);
       await faucetTx.wait();
+      setTransaction(faucetTx.hash);
       notifySuccess("Faucet successful!");
     } catch (err) {
       console.error("Error during faucet process:", err);
@@ -226,7 +246,6 @@ const WalletProvider = ({ children }) => {
         owner: contractOwner.toLowerCase(),
         soldTokens: soldTokens.toNumber(),
       };
-      console.log(token);
       return token;
     } catch (err) {
       console.log(err);
@@ -298,14 +317,12 @@ const WalletProvider = ({ children }) => {
 
           poolArray.push(pools);
         }
-
         const totalDepositAmount = poolArray.reduce((total, pool) => {
           return total + parseFloat(pool.depositAmount);
-        });
+        }, 0);
 
         const rewardToken = await tokenERC20(addressUSDT, wallet);
         const depositToken = await tokenERC20(addressUSDT, wallet);
-
         const data = {
           contractOwner: owner,
           contractAddress: wallet,
@@ -325,7 +342,7 @@ const WalletProvider = ({ children }) => {
     }
   };
 
-  const deposit = async (poolId, amount, address) => {
+  const deposit = async (poolId, amount) => {
     try {
       notifySuccess("calling contract...");
       // const ercContract = await getContract(addressUSDT, contractUSDTABI);
@@ -517,7 +534,7 @@ const WalletProvider = ({ children }) => {
     }
   };
 
-  const addTokenMetamask = async (token) => {
+  const addTokenMetamask = async () => {
     try {
       const { signer } = await getProviderAndSigner();
       const contract = new ethers.Contract(
@@ -675,6 +692,19 @@ const WalletProvider = ({ children }) => {
         owner,
         faucetToken,
         loadTokenICO,
+        deposit,
+        withdraw,
+        claimReward,
+        addPool,
+        modifierPool,
+        withdrawStakedTokens,
+        addTokenMetamask,
+        buyToken,
+        withdrawToken,
+        updateToken,
+        updateTokenSalePrice,
+        stakingData,
+        transaction,
       }}
     >
       {children}

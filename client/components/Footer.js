@@ -5,6 +5,7 @@ import { MdEmail } from "react-icons/md";
 import { FaFacebookF, FaTwitter } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 import axios from "axios";
+import { notifyError, notifySuccess } from "@/utils/Features";
 
 const Footer = () => {
   const [mail, setMail] = useState("");
@@ -16,13 +17,14 @@ const Footer = () => {
         mail,
       });
       const data = response.data;
-      console.log(data);
       if (data.success) {
-        console.log("Email sent successfully");
-        useState("");
+        console.log("Email send successfully");
+        notifySuccess(`${data.message}`);
+        setMail("");
       } else {
         console.log("Failed to send email: " + data.error);
-        useState("");
+        notifyError("Failed to send email");
+        setMail("");
       }
     } catch (err) {
       console.log(err);

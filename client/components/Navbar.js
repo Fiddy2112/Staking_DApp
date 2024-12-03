@@ -1,9 +1,25 @@
 import { WalletContext } from "@/context/WalletProvider";
 import Link from "next/link";
-import React, { useContext } from "react";
+import { useRouter } from "next/navigation";
+import React, { useContext, useEffect, useState } from "react";
 
 const Navbar = () => {
-  const { connectWallet, wallet, disconnectWallet } = useContext(WalletContext);
+  const { connectWallet, wallet, disconnectWallet, owner, walletConnected } =
+    useContext(WalletContext);
+
+  const [admin, setAdmin] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    if (wallet && walletConnected) {
+      if (wallet === owner) {
+        setAdmin(true);
+      } else {
+        setAdmin(false);
+        router.push("/");
+      }
+    }
+  }, [wallet, owner]);
+
   return (
     <div className="mx-auto max-w-screen-xl">
       <div className="h-[56px] flex items-center justify-between font-mono">
@@ -52,6 +68,17 @@ const Navbar = () => {
                 href="/faucet"
               >
                 Faucet
+              </Link>
+            </li>
+
+            <li className="py-1 px-4">
+              <Link
+                className={`font-mono font-base text-gray-50/70 hover:text-white ${
+                  admin ? "block" : "hidden"
+                }`}
+                href="/settings"
+              >
+                Settings
               </Link>
             </li>
           </ul>
