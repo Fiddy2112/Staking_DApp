@@ -82,7 +82,7 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
           <div className="mt-4">
             <button
               onClick={() => createPool(pool)}
-              className="px-4 py-1 rounded-md text-white bg-black font-mono text-base border border-white"
+              className="px-4 py-2 rounded-md text-white bg-black font-mono text-base border border-white"
             >
               Add Pool
             </button>

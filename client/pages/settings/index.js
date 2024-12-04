@@ -1,5 +1,6 @@
 import {
   AdminCard,
+  ICOToken,
   Investing,
   Pool,
   Staking,
@@ -11,8 +12,17 @@ import { WalletContext } from "@/context/WalletProvider";
 import React, { useContext, useEffect, useState } from "react";
 
 const index = () => {
-  const { stakingData, wallet, addPool, withdrawStakedTokens } =
-    useContext(WalletContext);
+  const {
+    stakingData,
+    wallet,
+    addPool,
+    withdrawStakedTokens,
+    loadTokenICO,
+    updateToken,
+    withdrawToken,
+    updateTokenSalePrice,
+    modifierPool,
+  } = useContext(WalletContext);
   const [poolDetail, setPoolDetail] = useState();
   const [loading, setLoading] = useState(false);
   const [modifyPoolId, setModifyPoolId] = useState();
@@ -21,8 +31,8 @@ const index = () => {
     if (wallet) {
       setLoading(true);
       const data = await stakingData(wallet);
-      setLoading(false);
       setPoolDetail(data);
+      setLoading(false);
     }
   };
 
@@ -78,12 +88,18 @@ const index = () => {
                   </div>
                 </div>
                 <Token token={poolDetail?.depositToken} />
+                <ICOToken
+                  loadTokenICO={loadTokenICO}
+                  withdrawToken={withdrawToken}
+                  updateToken={updateToken}
+                  updateTokenSalePrice={updateTokenSalePrice}
+                />
               </div>
-              {/* <Investing poolDetail={poolDetail} /> */}
-              {/* <Staking
+              <Investing poolDetail={poolDetail} />
+              <Staking
                 poolDetail={poolDetail}
                 withdrawStakedTokens={withdrawStakedTokens}
-              /> */}
+              />
               <Pool
                 poolDetail={poolDetail}
                 addPool={addPool}
