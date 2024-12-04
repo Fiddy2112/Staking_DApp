@@ -14,7 +14,7 @@ const index = () => {
         <div className="w-1/2">
           <h3 className="text-3xl font-mono">We fund your crypto trades</h3>
           <div>
-            <div>
+            <div className="flex items-center gap-2">
               <div>
                 <button
                   className="px-4 py-1 rounded-md font-mono text base mt-4 bg-white text-black"
@@ -26,6 +26,7 @@ const index = () => {
               <div>
                 {transaction ? (
                   <a
+                    className="px-4 py-1 rounded-md font-mono text base mt-4 bg-white text-black"
                     target="_blank"
                     href={`https://sepolia.etherscan.io/tx/${transaction}`}
                   >

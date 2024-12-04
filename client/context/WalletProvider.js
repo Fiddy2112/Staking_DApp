@@ -295,8 +295,11 @@ const WalletProvider = ({ children }) => {
         // const poolToNumber = poolLength.toNumber();
         for (let i = 0; i < poolLength.toNumber(); i++) {
           const pool = await contractReader.pool(i);
+          console.log(pool);
           const userInfo = await contractReader.user(i, wallet);
+          console.log(userInfo);
           const pending = await contractReader.pendingReward(wallet, i);
+          console.log(pending);
           // add pool
           const tokenPoolA = await tokenERC20(pool.depositToken, wallet);
           const tokenPoolB = await tokenERC20(pool.rewardToken, wallet);
@@ -310,8 +313,8 @@ const WalletProvider = ({ children }) => {
             apy: pool.apy.toString(),
             lockDays: pool.lockDays.toString(),
             // user
-            amount: toEth(userInfo.amount.toString()),
-            lastReward: toEth(userInfo.lastReward.toString()),
+            amount: toEther(userInfo.amount.toString()),
+            lastReward: toEther(userInfo.lastReward.toString()),
             lockUtil: convertTime(userInfo.lockUtil.toNumber()),
           };
 
@@ -345,11 +348,7 @@ const WalletProvider = ({ children }) => {
   const deposit = async (poolId, amount) => {
     try {
       notifySuccess("calling contract...");
-      // const ercContract = await getContract(addressUSDT, contractUSDTABI);
-      // const stakingContract = await getContract(
-      //   addressStaking,
-      //   contractStakingABI
-      // );
+
       const { signer } = await getProviderAndSigner();
       const ercContract = new ethers.Contract(
         addressUSDT,
@@ -362,6 +361,11 @@ const WalletProvider = ({ children }) => {
         contractStakingABI,
         signer
       );
+
+      // before deposit
+      // should approve staking
+      const approve = await ercContract.approve(addressStaking, amount);
+      await approve.wait();
 
       const amountInWei = ethers.utils.parseUnits(amount.toString(), 18);
       // gas
@@ -446,8 +450,10 @@ const WalletProvider = ({ children }) => {
     try {
       notifySuccess("calling contract...");
       const { _depositToken, _rewardToken, _apy, _lockDays } = pool;
-      if (_depositToken || _rewardToken || _apy || _lockDays)
+      if (!_depositToken || !_rewardToken || !_apy || !_lockDays) {
         notifyError("Provide all the detail");
+        return;
+      }
       const { signer } = await getProviderAndSigner();
       const contract = new ethers.Contract(
         addressStaking,

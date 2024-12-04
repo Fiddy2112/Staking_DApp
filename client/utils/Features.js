@@ -50,6 +50,9 @@ export const parseErrorMsg = (msg) => {
 };
 
 export const convertTime = (timestamp) => {
+  if (timestamp === 0 || !timestamp) {
+    return "No time set";
+  }
   const date = new Date(timestamp * 1000);
   const readableTime = date.toLocaleString("en-US", {
     year: "numeric",

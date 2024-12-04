@@ -1,5 +1,6 @@
-import { showAddress } from "@/utils/Features";
+import { copyPaste, notifyError, showAddress } from "@/utils/Features";
 import React, { useState } from "react";
+import { FaCopy } from "react-icons/fa";
 
 const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
   const [pool, setPool] = useState({
@@ -8,7 +9,8 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
     _apy: "",
     _lockDays: "",
   });
-  const poolArray = poolDetail?.poolArray ?? [];
+
+  const poolArrays = poolDetail?.poolArray ?? [];
   const createPool = async (pool) => {
     console.log(pool);
     const receipt = await addPool(pool);
@@ -30,9 +32,9 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
               <input
                 className="p-2 outline-none border border-white text-base font-mono text-white bg-black rounded-md"
                 type="text"
-                placeholder={`${showAddress(poolDetail?.depositToken.address)}`}
+                placeholder="Type address"
                 onChange={(e) =>
-                  setPool({ ...pool, _depositToken: e.target.value })
+                  setPool({ ...pool, _depositToken: e.target.value.trim() })
                 }
               />
             </div>
@@ -44,9 +46,9 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
               <input
                 className="p-2 outline-none border border-white text-base font-mono text-white bg-black rounded-md"
                 type="text"
-                placeholder={`${showAddress(poolDetail?.rewardToken.address)}`}
+                placeholder="Type address"
                 onChange={(e) =>
-                  setPool({ ...pool, _rewardToken: e.target.value })
+                  setPool({ ...pool, _rewardToken: e.target.value.trim() })
                 }
               />
             </div>
@@ -58,7 +60,7 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
               <input
                 className="p-2 outline-none border border-white text-base font-mono text-white bg-black rounded-md"
                 type="text"
-                placeholder={`10%`}
+                placeholder="Type Apy"
                 onChange={(e) => setPool({ ...pool, _apy: e.target.value })}
               />
             </div>
@@ -70,7 +72,7 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
               <input
                 className="p-2 outline-none border border-white text-base font-mono text-white bg-black rounded-md"
                 type="text"
-                placeholder={`1 day`}
+                placeholder="Type days"
                 onChange={(e) =>
                   setPool({ ...pool, _lockDays: e.target.value })
                 }
@@ -79,7 +81,7 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
           </div>
           <div className="mt-4">
             <button
-              onClick={createPool}
+              onClick={() => createPool(pool)}
               className="px-4 py-1 rounded-md text-white bg-black font-mono text-base border border-white"
             >
               Add Pool
@@ -88,48 +90,76 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
         </div>
         <div>
           <h3 className="font-mono text-2xl text-center py-2">Pool List</h3>
-          <div className="grid grid-cols-4">
-            {poolArray.map((item, i) => (
-              <div key={i} className="p-4 rounded-md border border-white">
-                <div>
-                  <div>Deposit Address</div>
-                  <div>{item?.depositTokenAddress}</div>
+          <div className="">
+            {poolArrays.map((item, i) => (
+              <div key={i} className="p-4 rounded-md border border-white my-4">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="p-2 border border-white rounded-md">
+                    <div className="text-base font-mono">Deposit Address</div>
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm font-mono text-[#c0392b]">
+                        {showAddress(item?.depositTokenAddress)}
+                      </div>
+                      <div
+                        onClick={() => copyPaste(item?.depositTokenAddress)}
+                        className="text-basse p-2 border border-white text-white rounded-md cursor-pointer"
+                      >
+                        <FaCopy />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-2 border border-white rounded-md">
+                    <div className="text-base font-mono">Reward Address</div>
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm font-mono text-[#27ae60]">
+                        {showAddress(item?.rewardTokenAddress)}
+                      </div>
+                      <div
+                        onClick={() => copyPaste(item?.rewardTokenAddress)}
+                        className="text-basse p-2 border border-white text-white rounded-md cursor-pointer"
+                      >
+                        <FaCopy />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-2 border border-white rounded-md">
+                    <div className="text-base font-mono">Deposit Amount</div>
+                    <div className="text-sm font-mono py-2">
+                      {item?.depositAmount} {item?.depositToken?.symbol}
+                    </div>
+                  </div>
+                  <div className="p-2 border border-white rounded-md">
+                    <div className="text-base font-mono">Apy</div>
+                    <div className="text-sm font-mono py-2">{item?.apy} %</div>
+                  </div>
+                  <div className="p-2 border border-white rounded-md">
+                    <div className="text-base font-mono">Lockdays</div>
+                    <div className="text-sm font-mono py-2">
+                      {item?.lockDays} days
+                    </div>
+                  </div>
+                  <div className="p-2 border border-white rounded-md">
+                    <div className="text-base font-mono">Amount</div>
+                    <div className="text-sm font-mono py-2">
+                      {item?.amount} {item?.depositToken?.symbol}
+                    </div>
+                  </div>
+                  {/* <div className="p-2 border border-white rounded-md">
+                    <div className="text-base font-mono">Last Reward</div>
+                    <div className="text-sm font-mono">{item?.lastReward}</div>
+                  </div> */}
+                  {/* <div className="p-2 border border-white rounded-md">
+                    <div className="text-base font-mono">Lock utils</div>
+                    <div className="text-sm font-mono">{item?.lockUtil}</div>
+                  </div> */}
                 </div>
-                <div>
-                  <div>Deposit Token</div>
-                  <div>{item?.depositToken}</div>
-                </div>
-                <div>
-                  <div>Reward Address</div>
-                  <div>{item?.rewardTokenAddress}</div>
-                </div>
-                <div>
-                  <div>Reward Token</div>
-                  <div>{item?.rewardToken}</div>
-                </div>
-                <div>
-                  <div>Deposit Amount</div>
-                  <div>{item?.depositAmount}</div>
-                </div>
-                <div>
-                  <div>Apy</div>
-                  <div>{item?.apy}</div>
-                </div>
-                <div>
-                  <div>Lockdays</div>
-                  <div>{item?.lockDays}</div>
-                </div>
-                <div>
-                  <div>Amount</div>
-                  <div>{item?.amount}</div>
-                </div>
-                <div>
-                  <div>Last Reward</div>
-                  <div>{item?.lastReward}</div>
-                </div>
-                <div>
-                  <div>Lock utils</div>
-                  <div>{item?.lockUtil}</div>
+                <div className="">
+                  <button
+                    className="outline-none px-4 py-1 border border-white font-mono rounded-md text-base mt-4"
+                    onClick={() => setModifyPoolId(i)}
+                  >
+                    Update APY
+                  </button>
                 </div>
               </div>
             ))}

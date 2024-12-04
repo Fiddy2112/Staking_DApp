@@ -30,7 +30,7 @@ const Token = ({ token }) => {
       </div>
       <div className="grid grid-cols-4 gap-4">
         <div className="flex items-center justify-between border border-white p-2 rounded-md">
-          <div className="font-mono text-base">name</div>
+          <div className="font-mono text-base">Name</div>
           <div className="font-mono text-sm">{token?.name}</div>
         </div>
         <div className="flex items-center justify-between border border-white p-2 rounded-md">

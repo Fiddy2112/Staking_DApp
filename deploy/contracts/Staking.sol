@@ -74,7 +74,13 @@ contract Staking is Ownable,ReentrancyGuard{
         currentUser.amount += _amount;
          // Update user's last reward and lock time
         currentUser.lastReward = block.timestamp;
+        // block.timestamp => current time : 1733259032;
+        // 1days = 86400 seconds;
+        // lockdays -> example : 3
+        // lockUtil = 1733259032 + (3 * 86400);
+        // convert link : https://www.unixtimestamp.com/
         currentUser.lockUtil = block.timestamp + (selectPool.lockDays * 1 days);
+        
         depositTokens[address(selectPool.depositToken)] += _amount;
          // Create notification for the deposit action
         _createNotification(_poolId, msg.sender, "Deposit", _amount);

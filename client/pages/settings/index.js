@@ -3,6 +3,7 @@ import {
   Investing,
   Pool,
   Staking,
+  StakingCard,
   Token,
   Transfer,
 } from "@/components";
@@ -46,9 +47,9 @@ const index = () => {
                       {poolDetail?.poolArray.map((pool, i) => (
                         <StakingCard
                           key={i}
-                          apy={pool.apy}
-                          amount={pool.totalDepositAmount}
-                          token={pool.depositToken.symbol}
+                          apy={`${pool?.apy}%`}
+                          amount={pool?.amount}
+                          token={pool?.depositToken?.symbol}
                         />
                       ))}
                     </div>
@@ -62,27 +63,27 @@ const index = () => {
                         name={`Total Stake`}
                         value={`${new Intl.NumberFormat("en-US").format(
                           poolDetail?.totalDepositAmount
-                        )} ${poolDetail?.depositToken.symbol}`}
+                        )} ${poolDetail?.depositToken?.symbol}`}
                       />
 
                       <AdminCard
                         name={`Your Balance`}
                         value={`${new Intl.NumberFormat("en-US").format(
                           poolDetail?.depositToken?.balance
-                            .toString()
+                            ?.toString()
                             .slice(0, 8)
-                        )} ${poolDetail?.depositToken.symbol}`}
+                        )} ${poolDetail?.depositToken?.symbol}`}
                       />
                     </div>
                   </div>
                 </div>
                 <Token token={poolDetail?.depositToken} />
               </div>
-              <Investing poolDetail={poolDetail} />
-              <Staking
+              {/* <Investing poolDetail={poolDetail} /> */}
+              {/* <Staking
                 poolDetail={poolDetail}
                 withdrawStakedTokens={withdrawStakedTokens}
-              />
+              /> */}
               <Pool
                 poolDetail={poolDetail}
                 addPool={addPool}
