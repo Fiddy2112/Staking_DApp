@@ -110,6 +110,8 @@ const WalletProvider = ({ children }) => {
       }
       const { signer } = await getProviderAndSigner();
       const walletAddress = await signer.getAddress();
+      // get currentPath
+      const currentUrl = window.location.pathname;
 
       const expirationTime = 24; // time cookie
       Cookies.set("walletAddress", walletAddress, {
@@ -119,6 +121,9 @@ const WalletProvider = ({ children }) => {
 
       setWallet(walletAddress);
       setWalletConnected(true);
+      // redirect
+      window.location.href = currentUrl;
+      console.log(currentUrl);
     } catch (err) {
       console.error("Error during wallet connection:", err);
       notifyError("Error during wallet connection. Please try again.");

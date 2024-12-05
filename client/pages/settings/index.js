@@ -8,6 +8,7 @@ import {
   Token,
   Transfer,
 } from "@/components";
+import UpdateAPY from "@/components/UpdateAPY";
 import { WalletContext } from "@/context/WalletProvider";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -26,6 +27,7 @@ const index = () => {
   const [poolDetail, setPoolDetail] = useState();
   const [loading, setLoading] = useState(false);
   const [modifyPoolId, setModifyPoolId] = useState();
+  const [modal, setModal] = useState(false);
 
   const LoadData = async () => {
     if (wallet) {
@@ -100,10 +102,20 @@ const index = () => {
                 poolDetail={poolDetail}
                 withdrawStakedTokens={withdrawStakedTokens}
               />
+
               <Pool
                 poolDetail={poolDetail}
                 addPool={addPool}
                 setModifyPoolId={setModifyPoolId}
+                setModal={setModal}
+                modal={modal}
+              />
+              <UpdateAPY
+                modifierPool={modifierPool}
+                setModifyPoolId={setModifyPoolId}
+                modifyPoolId={modifyPoolId}
+                modal={modal}
+                setModal={setModal}
               />
             </div>
           ) : (

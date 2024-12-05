@@ -6,7 +6,7 @@ import { IoWallet } from "react-icons/io5";
 import { MdArrowOutward } from "react-icons/md";
 
 const Header = () => {
-  const { wallet, loadTokenICO } = useContext(WalletContext);
+  const { wallet, loadTokenICO, stakingData } = useContext(WalletContext);
   const [tokenICo, setTokenICO] = useState(null);
   const [totalPercent, setTotalPercent] = useState(null);
 

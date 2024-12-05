@@ -15,7 +15,6 @@ const Navbar = () => {
         setAdmin(true);
       } else {
         setAdmin(false);
-        router.push("/");
       }
     }
   }, [wallet, owner]);

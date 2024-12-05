@@ -1,9 +1,26 @@
 import Image from "next/image";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Header from "./Header";
 import StakingCard from "./StakingCard";
+import { WalletContext } from "@/context/WalletProvider";
 
 const Section = () => {
+  const { stakingData, wallet } = useContext(WalletContext);
+  const [poolDetail, setPoolDetail] = useState();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const LoadData = async () => {
+      if (wallet) {
+        setLoading(true);
+        const data = await stakingData(wallet);
+        setPoolDetail(data);
+        setLoading(false);
+      }
+    };
+
+    LoadData();
+  }, [wallet]);
   return (
     <div className="mx-auto max-w-screen-xl mt-4">
       <div>
@@ -26,11 +43,24 @@ const Section = () => {
       <div className="">
         <Header />
       </div>
-      <div className="grid grid-cols-3 gap-4">
-        <StakingCard apy={"50%"} amount={"20.0"} token={"ETH"} />
-        <StakingCard apy={"100%"} amount={"100.0"} token={"ETH"} />
-        <StakingCard apy={"200%"} amount={"200.0"} token={"ETH"} />
-      </div>
+      {!loading ? (
+        <div className="grid grid-cols-3 gap-4">
+          {poolDetail?.poolArray.map((pool, i) => (
+            <StakingCard
+              key={i}
+              apy={`${pool?.apy}%`}
+              amount={pool?.amount}
+              token={pool?.depositToken?.symbol}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 gap-4">
+          <StakingCard apy={`10%`} amount={"0"} token={"USDT"} />
+          <StakingCard apy={`30%`} amount={"0"} token={"USDT"} />
+          <StakingCard apy={`60%`} amount={"0"} token={"USDT"} />
+        </div>
+      )}
       {/* our partners */}
       <div className="flex justify-center flex-col text-center items-center mt-8">
         <span className="bg-gray-700/40 border border-gray-600 text-white font-mono text-sm p-2 rounded-md">

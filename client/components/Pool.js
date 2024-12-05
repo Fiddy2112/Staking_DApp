@@ -2,7 +2,7 @@ import { copyPaste, notifyError, showAddress } from "@/utils/Features";
 import React, { useState } from "react";
 import { FaCopy } from "react-icons/fa";
 
-const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
+const Pool = ({ poolDetail, addPool, setModifyPoolId, setModal, modal }) => {
   const [pool, setPool] = useState({
     _depositToken: "",
     _rewardToken: "",
@@ -156,7 +156,13 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId }) => {
                 <div className="">
                   <button
                     className="outline-none px-4 py-1 border border-white font-mono rounded-md text-base mt-4"
-                    onClick={() => setModifyPoolId(i)}
+                    data-modal-target="default-modal"
+                    data-modal-toggle="default-modal"
+                    // onClick={() => setModifyPoolId(i)}
+                    onClick={() => {
+                      setModifyPoolId(i);
+                      setModal(!modal);
+                    }}
                   >
                     Update APY
                   </button>
