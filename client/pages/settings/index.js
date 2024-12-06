@@ -8,6 +8,7 @@ import {
   Token,
   Transfer,
 } from "@/components";
+import ICOSale from "@/components/ICOSale";
 import UpdateAPY from "@/components/UpdateAPY";
 import { WalletContext } from "@/context/WalletProvider";
 import React, { useContext, useEffect, useState } from "react";
@@ -28,6 +29,7 @@ const index = () => {
   const [loading, setLoading] = useState(false);
   const [modifyPoolId, setModifyPoolId] = useState();
   const [modal, setModal] = useState(false);
+  const [buy, setBuy] = useState(false);
 
   const LoadData = async () => {
     if (wallet) {
@@ -95,9 +97,13 @@ const index = () => {
                   withdrawToken={withdrawToken}
                   updateToken={updateToken}
                   updateTokenSalePrice={updateTokenSalePrice}
+                  setBuy={setBuy}
+                  buy={buy}
                 />
+
+                <ICOSale setBuy={setBuy} buy={buy} />
               </div>
-              <Investing poolDetail={poolDetail} />
+              {/* <Investing poolDetail={poolDetail} /> */}
               <Staking
                 poolDetail={poolDetail}
                 withdrawStakedTokens={withdrawStakedTokens}

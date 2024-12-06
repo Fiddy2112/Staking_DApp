@@ -130,7 +130,7 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId, setModal, modal }) => {
                   </div>
                   <div className="p-2 border border-white rounded-md">
                     <div className="text-base font-mono">Apy</div>
-                    <div className="text-sm font-mono py-2">{item?.apy} %</div>
+                    <div className="text-sm font-mono py-2">{item?.apy}%</div>
                   </div>
                   <div className="p-2 border border-white rounded-md">
                     <div className="text-base font-mono">Lockdays</div>
@@ -158,7 +158,6 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId, setModal, modal }) => {
                     className="outline-none px-4 py-1 border border-white font-mono rounded-md text-base mt-4"
                     data-modal-target="default-modal"
                     data-modal-toggle="default-modal"
-                    // onClick={() => setModifyPoolId(i)}
                     onClick={() => {
                       setModifyPoolId(i);
                       setModal(!modal);

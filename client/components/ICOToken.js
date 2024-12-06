@@ -6,6 +6,8 @@ const ICOToken = ({
   withdrawToken,
   updateToken,
   updateTokenSalePrice,
+  setBuy,
+  buy,
 }) => {
   const [tokenDetail, setTokenDetail] = useState("");
   const [updateTokenAddr, setUpdateTokenAddr] = useState("");
@@ -57,14 +59,6 @@ const ICOToken = ({
           Update token ICO price
         </h3>
         <div>
-          <div className="my-4">
-            <button
-              className="px-4 py-2 border border-white rounded-md"
-              onClick={widthdrawToken}
-            >
-              Withdraw
-            </button>
-          </div>
           <div className="flex flex-col gap-4">
             <div>
               <div className="flex flex-col">
@@ -105,6 +99,24 @@ const ICOToken = ({
                 Update price
               </button>
             </div>
+          </div>
+        </div>
+        <div className="flex items-center border-t border-[#dbdbdb] mt-4 gap-4">
+          <div className="mt-4">
+            <button
+              onClick={() => setBuy(!buy)}
+              className="px-4 py-2 rounded-md border border-white text-base font-mono"
+            >
+              Buy token
+            </button>
+          </div>
+          <div className="my-4">
+            <button
+              className="px-4 py-2 border border-white rounded-md mt-4"
+              onClick={widthdrawToken}
+            >
+              Withdraw
+            </button>
           </div>
         </div>
       </div>
