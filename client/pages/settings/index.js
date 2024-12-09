@@ -40,8 +40,6 @@ const index = () => {
     }
   };
 
-  console.log(poolDetail);
-
   useEffect(() => {
     LoadData();
   }, [wallet]);
@@ -103,7 +101,6 @@ const index = () => {
 
                 <ICOSale setBuy={setBuy} buy={buy} />
               </div>
-              {/* <Investing poolDetail={poolDetail} /> */}
               <Staking
                 poolDetail={poolDetail}
                 withdrawStakedTokens={withdrawStakedTokens}
@@ -122,6 +119,7 @@ const index = () => {
                 modifyPoolId={modifyPoolId}
                 modal={modal}
                 setModal={setModal}
+                poolDetail={poolDetail}
               />
             </div>
           ) : (

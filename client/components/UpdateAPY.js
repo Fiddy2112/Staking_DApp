@@ -1,5 +1,5 @@
 import { notifyError } from "@/utils/Features";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const UpdateAPY = ({
   modifierPool,
@@ -7,19 +7,34 @@ const UpdateAPY = ({
   modal,
   setModal,
   setModifyPoolId,
+  poolDetail,
 }) => {
   const [apy, setApy] = useState("");
 
+  const currentPool = poolDetail?.poolArray?.[modifyPoolId] || {};
+
+  useEffect(() => {
+    if (currentPool?.apy) {
+      setApy(currentPool.apy);
+    }
+  }, [currentPool]);
+
   const updateToken = async (modifyPoolId, apy) => {
-    console.log(modifyPoolId, apy);
     if (!modifierPool || !apy) {
-      notifyError("Provide all the detail");
+      notifyError("Provide all the details");
       return;
     }
-    const receipt = await modifierPool(modifyPoolId, apy);
-    if (receipt) {
-      console.log(receipt);
-      window.location.reload();
+    try {
+      const receipt = await modifierPool(modifyPoolId, apy);
+      if (receipt) {
+        console.log("Updated successfully");
+        window.location.reload();
+      } else {
+        notifyError("Failed to update APY");
+      }
+    } catch (error) {
+      console.error("Error updating APY:", error);
+      notifyError("An error occurred while updating APY");
     }
   };
   return (
@@ -78,6 +93,7 @@ const UpdateAPY = ({
                   type="text"
                   placeholder={`${modifyPoolId}`}
                   value={modifyPoolId}
+                  readOnly
                 />
               </div>
               <div className="flex flex-col">
@@ -88,7 +104,7 @@ const UpdateAPY = ({
                   className="p-2 outline-none border border-white text-base font-mono text-white bg-black rounded-md"
                   type="text"
                   placeholder="Type APY"
-                  value={apy}
+                  value={apy || currentPool.apy}
                   onChange={(e) => setApy(e.target.value)}
                   required
                 />

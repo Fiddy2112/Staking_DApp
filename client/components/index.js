@@ -9,6 +9,7 @@ import Staking from "./Staking";
 import StakingCard from "./StakingCard";
 import Stakingpool from "./Stakingpool";
 import Token from "./Token";
+import Withdraw from "./Withdraw";
 
 export {
   Navbar,
@@ -22,4 +23,5 @@ export {
   AdminCard,
   StakingCard,
   Token,
+  Withdraw,
 };

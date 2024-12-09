@@ -26,7 +26,7 @@ const index = () => {
               <div>
                 {transaction ? (
                   <a
-                    className="px-4 py-1 rounded-md font-mono text base block bg-white text-black"
+                    className="px-4 py-1 rounded-md font-mono text base block bg-white text-black mt-4"
                     target="_blank"
                     href={`https://sepolia.etherscan.io/tx/${transaction}`}
                   >

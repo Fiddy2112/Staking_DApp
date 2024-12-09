@@ -6,9 +6,9 @@ import { IoWallet } from "react-icons/io5";
 import { MdArrowOutward } from "react-icons/md";
 
 const Header = () => {
-  const { wallet, loadTokenICO, stakingData } = useContext(WalletContext);
+  const { wallet, loadTokenICO } = useContext(WalletContext);
   const [tokenICo, setTokenICO] = useState(null);
-  const [totalPercent, setTotalPercent] = useState(null);
+  const [totalPercent, setTotalPercent] = useState();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -21,23 +21,22 @@ const Header = () => {
 
     LoadToken();
   }, []);
-
   useEffect(() => {
-    if (tokenICo) {
-      const totalSupply = new Intl.NumberFormat("en-US").format(
-        tokenICo?.supply
-      );
-      const soldTokens = new Intl.NumberFormat("en-US").format(
-        tokenICo?.soldTokens
-      );
-      if (isNaN(totalSupply) || isNaN(soldTokens)) {
-        console.error("Invalid totalSupply or soldTokens value");
-        return;
+    const caculatorPercent = () => {
+      const tokenSold = tokenICo?.soldTokens ?? 0;
+      const tokenSupply =
+        tokenICo?.soldTokens + Number(tokenICo?.tokenBalance) * 1 ?? 1;
+      const newPercent = (tokenSold / tokenSupply) * 100;
+      if (tokenSupply === 0) {
+        console.log("Token balance is zero,can not caculate percentage");
+      } else {
+        setTotalPercent(newPercent);
       }
-      const tokenLeft = totalSupply - soldTokens;
-      const percent = (tokenLeft / totalSupply) * 100;
-      setTotalPercent(isNaN(percent) ? 0 : Math.floor(percent));
-    }
+    };
+
+    const timer = setTimeout(caculatorPercent, 1000);
+
+    return () => clearTimeout(timer);
   }, [tokenICo]);
   return (
     <div className="flex items-center my-7 ">
@@ -72,17 +71,17 @@ const Header = () => {
         {loading ? (
           <div role="status" class="max-w-sm animate-pulse">
             <div className="w-[350px] p-4 bg-black rounded-md">
-              <div class="h-3 rounded-full bg-gray-700 w-20 mx-auto text-center mb-4"></div>
-              <div class="h-2 rounded-full bg-gray-700 w-20 mx-auto text-center mb-4"></div>
-              <div class="h-2 rounded-full bg-gray-700 w-36 mx-auto text-center mb-4 mt-4"></div>
-              <div class="h-2 rounded-full dark:bg-gray-700 mb-6"></div>
+              <div className="h-3 rounded-full bg-gray-700 w-20 mx-auto text-center mb-4"></div>
+              <div className="h-2 rounded-full bg-gray-700 w-20 mx-auto text-center mb-4"></div>
+              <div className="h-2 rounded-full bg-gray-700 w-36 mx-auto text-center mb-4 mt-4"></div>
+              <div className="h-2 rounded-full dark:bg-gray-700 mb-6"></div>
 
-              <div class="h-2 rounded-full dark:bg-gray-700 mb-6"></div>
+              <div className="h-2 rounded-full dark:bg-gray-700 mb-6"></div>
 
-              <div class="h-2 rounded-full bg-gray-700 w-32 mx-auto text-center mb-4 mt-4"></div>
+              <div className="h-2 rounded-full bg-gray-700 w-32 mx-auto text-center mb-4 mt-4"></div>
               <div className="flex items-center justify-between">
-                <div class="h-2 rounded-full bg-gray-700 w-12 text-center mb-4 mt-4"></div>
-                <div class="h-2 rounded-full bg-gray-700 w-12 text-center mb-4 mt-4"></div>
+                <div className="h-2 rounded-full bg-gray-700 w-12 text-center mb-4 mt-4"></div>
+                <div className="h-2 rounded-full bg-gray-700 w-12 text-center mb-4 mt-4"></div>
               </div>
               <div class="h-2 rounded-full dark:bg-gray-700 mb-2.5"></div>
             </div>
@@ -116,17 +115,14 @@ const Header = () => {
                       Token
                     </span>
                     <span className="text-sm font-medium text-blue-700 dark:text-white">
-                      {totalPercent !== null
-                        ? `${totalPercent}%`
-                        : "Loading..."}
+                      {totalPercent}
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                     <div
                       className="bg-blue-600 h-2.5 rounded-full"
                       style={{
-                        width:
-                          totalPercent !== null ? `${totalPercent}%` : "0%",
+                        width: `${totalPercent}%`,
                       }}
                     ></div>
                   </div>

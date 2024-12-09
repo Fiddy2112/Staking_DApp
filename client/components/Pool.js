@@ -12,10 +12,8 @@ const Pool = ({ poolDetail, addPool, setModifyPoolId, setModal, modal }) => {
 
   const poolArrays = poolDetail?.poolArray ?? [];
   const createPool = async (pool) => {
-    console.log(pool);
     const receipt = await addPool(pool);
     if (receipt) {
-      console.log(receipt);
       window.location.reload();
     }
   };

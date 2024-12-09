@@ -3,10 +3,13 @@ import React, { useContext, useEffect, useState } from "react";
 import Header from "./Header";
 import StakingCard from "./StakingCard";
 import { WalletContext } from "@/context/WalletProvider";
+import Withdraw from "./Withdraw";
+import Investing from "./Investing";
 
 const Section = () => {
-  const { stakingData, wallet } = useContext(WalletContext);
-  const [poolDetail, setPoolDetail] = useState();
+  const { stakingData, wallet, deposit, claimReward, withdraw } =
+    useContext(WalletContext);
+  const [poolDetail, setPoolDetail] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -43,6 +46,7 @@ const Section = () => {
       <div className="">
         <Header />
       </div>
+      {/* staking card */}
       {!loading ? (
         <div className="grid grid-cols-3 gap-4">
           {poolDetail?.poolArray.map((pool, i) => (
@@ -61,6 +65,17 @@ const Section = () => {
           <StakingCard apy={`60%`} amount={"0"} token={"USDT"} />
         </div>
       )}
+      {/* investing */}
+      <Investing poolDetail={poolDetail} deposit={deposit} />
+      {/* withdraw */}
+      <div>
+        <Withdraw
+          poolDetail={poolDetail}
+          withdraw={withdraw}
+          claimReward={claimReward}
+        />
+      </div>
+
       {/* our partners */}
       <div className="flex justify-center flex-col text-center items-center mt-8">
         <span className="bg-gray-700/40 border border-gray-600 text-white font-mono text-sm p-2 rounded-md">
@@ -73,7 +88,13 @@ const Section = () => {
           <div className="grid grid-cols-6 gap-4">
             <div className="p-4 rounded-md bg-white text-black text-center font-semibold uppercase text-xl w-[165px] h-[85px] flex items-center  justify-center hover:scale-105">
               <div className="flex items-center gap-2">
-                <Image className="" src="/tron.png" width={50} height={50} />
+                <Image
+                  className=""
+                  src="/tron.png"
+                  width={50}
+                  height={50}
+                  alt="img_partners"
+                />
                 Tron
               </div>
             </div>
@@ -82,25 +103,49 @@ const Section = () => {
             </div>
             <div className="p-4 rounded-md bg-white text-black text-center font-semibold uppercase text-xl w-[165px] h-[85px] flex items-center  justify-center hover:scale-105">
               <div className="flex items-center gap-2">
-                <Image className="" src="/okx.png" width={50} height={50} />
+                <Image
+                  className=""
+                  src="/okx.png"
+                  width={50}
+                  height={50}
+                  alt="img_partners"
+                />
                 Okx
               </div>
             </div>
             <div className="p-4 rounded-md bg-white text-black text-center font-semibold uppercase text-xl w-[165px] h-[85px] flex items-center  justify-center hover:scale-105">
               <div className="flex items-center gap-2">
-                <Image className="" src="/eth.png" width={50} height={50} />
+                <Image
+                  className=""
+                  src="/eth.png"
+                  width={50}
+                  height={50}
+                  alt="img_partners"
+                />
                 Eth
               </div>
             </div>
             <div className="p-4 rounded-md bg-white text-black text-center font-semibold uppercase text-xl w-[165px] h-[85px] flex items-center  justify-center hover:scale-105">
               <div className="flex items-center gap-2">
-                <Image className="" src="/bitc.png" width={50} height={50} />
+                <Image
+                  className=""
+                  src="/bitc.png"
+                  width={50}
+                  height={50}
+                  alt="img_partners"
+                />
                 Bitcoin
               </div>
             </div>
             <div className="p-4 rounded-md bg-white text-black text-center font-semibold uppercase text-xl w-[165px] h-[85px] flex items-center  justify-center hover:scale-105">
               <div className="flex items-center gap-2">
-                <Image className="" src="/usdt.png" width={50} height={50} />
+                <Image
+                  className=""
+                  src="/usdt.png"
+                  width={50}
+                  height={50}
+                  alt="img_partners"
+                />
                 Usdt
               </div>
             </div>

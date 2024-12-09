@@ -9,6 +9,7 @@ import {
   showAddress,
   toEther,
   toNumb,
+  toWei,
 } from "@/utils/Features";
 import { USDTABI } from "@/utils/USDTABI.";
 import { FaucetABI } from "@/utils/FaucetABI";
@@ -72,7 +73,6 @@ const WalletProvider = ({ children }) => {
         );
 
         const owner = await contract.owner();
-        console.log(owner);
         setOwner(owner);
 
         if (currentAddress === address) {
@@ -123,7 +123,6 @@ const WalletProvider = ({ children }) => {
       setWalletConnected(true);
       // redirect
       window.location.href = currentUrl;
-      console.log(currentUrl);
     } catch (err) {
       console.error("Error during wallet connection:", err);
       notifyError("Error during wallet connection. Please try again.");
@@ -202,7 +201,7 @@ const WalletProvider = ({ children }) => {
         address: await contractReader.address,
         totalSupply: toEther(await contractReader.totalSupply()),
         balance: toEther(await contractReader.balanceOf(userAddress)),
-        contractTokenBalance: toEther(
+        contractTokenBalance: toNumb(
           await contractReader.balanceOf(addressStaking)
         ),
       };
@@ -282,11 +281,11 @@ const WalletProvider = ({ children }) => {
         const owner = await contractReader.owner();
         // promise
         const notificationArray = await Promise.all(
-          notifications.map(
+          notifications?.map(
             async ({ poolId, amount, user, typeOf, timestamp }) => {
               return {
                 poolId: poolId.toNumber(),
-                amount: toEther(amount).toNumber(),
+                amount: amount,
                 user: user,
                 typeOf: typeOf,
                 timestamp: convertTime(timestamp),
@@ -300,11 +299,8 @@ const WalletProvider = ({ children }) => {
         // const poolToNumber = poolLength.toNumber();
         for (let i = 0; i < poolLength.toNumber(); i++) {
           const pool = await contractReader.pool(i);
-          console.log(pool);
           const userInfo = await contractReader.user(i, wallet);
-          console.log(userInfo);
           const pending = await contractReader.pendingReward(wallet, i);
-          console.log(pending);
           // add pool
           const tokenPoolA = await tokenERC20(pool.depositToken, wallet);
           const tokenPoolB = await tokenERC20(pool.rewardToken, wallet);
@@ -314,12 +310,12 @@ const WalletProvider = ({ children }) => {
             rewardTokenAddress: pool.rewardToken,
             depositToken: tokenPoolA,
             rewardToken: tokenPoolB,
-            depositAmount: toEther(pool.depositAmount.toString()),
+            depositAmount: toNumb(pool.depositAmount),
             apy: pool.apy.toString(),
             lockDays: pool.lockDays.toString(),
             // user
-            amount: toEther(userInfo.amount.toString()),
-            lastReward: toEther(userInfo.lastReward.toString()),
+            amount: toNumb(userInfo.amount),
+            lastReward: toNumb(userInfo.lastReward),
             lockUtil: convertTime(userInfo.lockUtil.toNumber()),
           };
 
@@ -369,19 +365,21 @@ const WalletProvider = ({ children }) => {
 
       // before deposit
       // should approve staking
-      const approve = await ercContract.approve(addressStaking, amount);
-      await approve.wait();
+      // console.log("Attempting to approve staking tokens...");
+      const approveTx = await ercContract.approve(addressStaking, amount);
+      // console.log("Approval transaction:", approveTx.hash);
+      await approveTx.wait();
+      // console.log("Approval successful.");
+      // const amountInWei = toWei(amount);
+      // console.log("amount", amountInWei);
 
-      const amountInWei = ethers.utils.parseUnits(amount.toString(), 18);
       // gas
-      const gasEstimation = await stakingContract.estimateGas.deposit(
-        Number(poolId),
-        amountInWei
-      );
+      // const gasEstimation = await stakingContract.estimateGas.deposit(
+      //   Number(poolId),
+      //   amount
+      // );
 
-      const stakingTx = await stakingContract.deposit(poolId, amountInWei, {
-        gasLimit: gasEstimation,
-      });
+      const stakingTx = await stakingContract.deposit(poolId, amount);
       const receipt = await stakingTx.wait();
       notifySuccess("Token take successfully");
       return receipt;
@@ -426,7 +424,7 @@ const WalletProvider = ({ children }) => {
     try {
       notifySuccess("calling contract...");
       const { signer } = await getProviderAndSigner();
-      s;
+
       const stakingContract = new ethers.Contract(
         addressStaking,
         contractStakingABI,
